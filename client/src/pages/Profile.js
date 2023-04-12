@@ -36,11 +36,14 @@ const Profile = () => {
                 console.log('No token')
                 return;
             }
+
+            const now = new Date().toLocaleString();
+
             if (updateProject) {
-                const response = await axios.put(`/api/projects/${updateProject._id}`, { title, progress }, { headers: { Authorization: `Bearer ${token}`} });
+                const response = await axios.put(`/api/projects/${updateProject._id}`, { title, progress: `${progress} (${now})` }, { headers: { Authorization: `Bearer ${token}`} });
                 setProjects(projects.map((project) => project._id === updateProject._id ? response.data : project));
             } else {
-                const response = await axios.post('/api/projects', { title, progress }, { headers: { Authorization: `Bearer ${token}`} });
+                const response = await axios.post('/api/projects', { title, progress: `${progress} (${now})` }, { headers: { Authorization: `Bearer ${token}`} });
                 setProjects([...projects, response.data]);
             }
             setTitle('');
